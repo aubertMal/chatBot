@@ -6,6 +6,8 @@ public class Main {
 
     public static void main(String[]args){
 
+        scanner = new Scanner (System.in);
+
         MessageBox messageBox = new MessageBox();
         Thread threadMessageBox = new Thread(messageBox);
 
