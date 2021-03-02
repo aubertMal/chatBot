@@ -11,12 +11,11 @@ public class Main {
         MessageBox messageBox = new MessageBox();
         Thread threadMessageBox = new Thread(messageBox);
 
-        AttenteUtilisateur attenteUtilisateur = new AttenteUtilisateur();
+        AttenteUtilisateur attenteUtilisateur = new AttenteUtilisateur(messageBox);
         Thread threadAttente = new Thread(attenteUtilisateur);
 
         threadAttente.start();
         threadMessageBox.start();
-
 
     }
 }

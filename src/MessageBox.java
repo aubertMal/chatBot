@@ -10,12 +10,13 @@ public class MessageBox implements Runnable{
 
     @Override
     public void run() {
-        try {
-            wait();
-        } catch(InterruptedException e){
-            System.out.println("Thread interrupted");
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                System.out.println("Thread interrupted");
+            }
         }
-
         ecritMessage("Bonjour!");
     }
 }

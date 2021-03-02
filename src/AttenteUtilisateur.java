@@ -1,9 +1,17 @@
 import java.io.IOException;
 
 public class AttenteUtilisateur implements Runnable{
-    public void run () {
 
+    private MessageBox messageBox;
+
+    public AttenteUtilisateur(MessageBox msgBox) {
+        messageBox = msgBox;
+    }
+
+    public void run () {
         String s = Main.scanner.next();
-        notifyAll();
+        synchronized (messageBox) {
+            messageBox.notify();
+        }
     }
 }
