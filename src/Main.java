@@ -16,9 +16,16 @@ public class Main {
         mapListeCritere.put("","Bonjour!");
         mapListeCritere.put("Bonjour","Comment t'appelles-tu?");
         mapListeCritere.put("m'appelle","Que puis je faire pour toi ");
-        mapListeCritere.put("vacances","Bonne idée! Que préfères-tu? rester en France ou partir à l'étranger?");
-        mapListeCritere.put("France","D'accord! Es tu plutôt Plage ou Montagne?");
+        mapListeCritere.put("vacances","Bonne idée! Que préfères-tu? plage ou montagne?");
         mapListeCritere.put("Plage", "C'est cool! Mer ou Océan?");
+        mapListeCritere.put("Mer", "OK; en France ou à l'étranger?");
+        mapListeCritere.put("Océan", "OK; en France ou à l'étranger?");
+        mapListeCritere.put("Montagne", "OK; en France ou à l'étranger?");
+        mapListeCritere.put("France", "Préfères tu un séjour culturel ou un séjour détente?");
+        mapListeCritere.put("Etranger","Préfères tu un séjour culturel ou un séjour détente?");
+        mapListeCritere.put("culturel","D'accord! Voici ce que je te propose:");
+        mapListeCritere.put("détente","D'accord! Voici ce que je te propose:");
+
         mapListeCritere.put("Bye!", "Au revoir et bonnes vacances!");
 
 

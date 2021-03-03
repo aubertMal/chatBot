@@ -13,7 +13,11 @@ public class ChatBot implements Runnable{
 
         HashMap<String,String> mapCritereDestination=new HashMap<>();
 
-        while(!message.equals("Bye")){
+        Connexion connexion = new Connexion("Destinations.db");
+        connexion.connect();
+        connexion.close();
+
+        while(!message.equals("Bye!")){
             try {
                 synchronized (this) {
                     wait();
