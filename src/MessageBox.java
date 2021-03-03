@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class MessageBox implements Runnable{
@@ -6,29 +7,26 @@ public class MessageBox implements Runnable{
         System.out.println(message);
     }
 
-    static String litMessage(){
-        return Main.scanner.next();
-    }
-
     @Override
     public void run() {
-        synchronized (this) {
+        String message="";
+
+        HashMap<String,String> mapCritereDestination=new HashMap<>();
+
+        while(message!="Bye"){
             try {
-                wait();
+                synchronized (this) {
+                    wait();
+                }
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted");
             }
-        }
-        ecritMessage("Bonjour!");
-        ecritMessage("Comment t'appelles Tu?");
-        ecritMessage("Que dirais tu de partir en voyage "+ litMessage() + "?");
-        if (litMessage() == "Non")
-            return;
-
-        TreeMap<String,String> mapCritereDestination=new TreeMap<String,String>();
-
-        while(litMessage()!="FIN"){
-            for (String critere:Main.listeCriteres) {
+            message = Main.scanner.next();
+            String[] motsMessages = message.split(" ");
+            for (String mot:
+                 motsMessages) {
+                if (Main.mapListeCritere.containsKey("mot"))
+                    ecritMessage(Main.mapListeCritere.get("mot"));
             }
         }
     }

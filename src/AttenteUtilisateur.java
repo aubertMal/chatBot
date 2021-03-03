@@ -9,9 +9,11 @@ public class AttenteUtilisateur implements Runnable{
     }
 
     public void run () {
-        String s = Main.scanner.next();
-        synchronized (messageBox) {
-            messageBox.notify();
+        while(true) {
+            String s = Main.scanner.next();
+            synchronized (messageBox) {
+                messageBox.notify();
+            }
         }
     }
 }
