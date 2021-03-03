@@ -10,6 +10,7 @@ public class ChatBot implements Runnable{
     public void run() {
         String message="";
         boolean motTrouve;
+        String elementMessage = "";
 
         HashMap<String,String> mapCritereDestination=new HashMap<>();
 
@@ -26,12 +27,33 @@ public class ChatBot implements Runnable{
                     motTrouve = false;
 
                     for (int i=0;i<motsMessages.length;i++) {//TODO remplacer par forEach et trouver un moyen de récupérer le prénom
-                        if (Main.mapListeCritere.containsKey(motsMessages[i])) {
+                        elementMessage = motsMessages[i];
+                        if (Main.mapListeCritere.containsKey(elementMessage)) {
                             motTrouve = true;
-                            if (motsMessages[i].equals("m'appelle"))
-                                ecritMessage(Main.mapListeCritere.get(motsMessages[i])+ motsMessages[i+1] +"?" );
-                            else
-                                ecritMessage(Main.mapListeCritere.get(motsMessages[i]));
+                            switch(elementMessage){
+                                case "m'appelle":
+                                    ecritMessage(Main.mapListeCritere.get(elementMessage)+ motsMessages[i+1] +"?" );
+                                    break;
+                                case "Plage":
+                                case "Montagne":
+                                    mapCritereDestination.put("lieu", elementMessage);
+                                    break;
+                                case "Culturel":
+                                case "Détente":
+                                    mapCritereDestination.put("typeVacances",elementMessage);
+                                    break;
+                                case "Etranger":
+                                case "France":
+                                    mapCritereDestination.put("localisation",elementMessage);
+                                    break;
+                                case "Mer":
+                                case "Océan":
+                                    mapCritereDestination.put("typePlage",elementMessage);
+                                    break;
+                                default:
+                                    ecritMessage(Main.mapListeCritere.get(motsMessages[i]));
+                                    break;
+                            }
                         }
                     }
 
@@ -42,5 +64,6 @@ public class ChatBot implements Runnable{
                 System.out.println("Thread interrupted");
             }
         }
+        ecritMessage("Tu as choisi: " + mapCritereDestination);
     }
 }
