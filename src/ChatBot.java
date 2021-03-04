@@ -61,20 +61,30 @@ public class ChatBot implements Runnable{
                                 case "Détente":
                                     criteresUtilisateur.setTypesVacances(elementMessage);
                                     break;
+                                case "Baignade":
+                                case "Randonnée":
+                                case "Escalade":
+                                case "Surf":
+                                    criteresUtilisateur.setActivite(elementMessage);
+                                    break;
                                 default:
                                     break;
                             }
                             //Puis on lui répond
                             if (elementMessage.equals("m'appelle"))
                                 ecritMessage(Main.mapListeCritere.get(elementMessage)+ motsMessages[i+1] +"?" );
-                            else if (elementMessage.equals("Culturel") || elementMessage.equals("Détente") || elementMessage.equals("Non")){
+                            else if (elementMessage.equals("Baignade")
+                                    || elementMessage.equals("Randonnée")
+                                    || elementMessage.equals("Escalade")
+                                    || elementMessage.equals("Surf")
+                                    || elementMessage.equals("Non")){
                                 if (elementMessage.equals("Non"))
                                     nbrTry++;
 
                                 destination = getDestination(criteresUtilisateur,nbrTry);
                                 if (!destination.isEmpty())
                                 {
-                                    messageProposition = elementMessage.equals("Non")?"Et si je te propose "+destination+" sinon?":"Aimerais tu aller à "+destination;
+                                    messageProposition = elementMessage.equals("Non")?"Et si je te propose "+destination+" sinon?":"Aimerais tu aller à "+destination+"?";
                                     ecritMessage(messageProposition);
                                     openUrl(getUrl(destination));
                                 }
@@ -102,7 +112,8 @@ public class ChatBot implements Runnable{
 
         resultSet = connexion.query("SELECT destination FROM destinations WHERE typevacances ='"+ criteres.getTypesVacances() + "'\n" +
                 "AND lieu = '" + criteres.getLieu()+ "'\n" +
-                "AND localisation = '"+ criteres.getLocalisation()+"'");
+                "AND localisation = '"+ criteres.getLocalisation()+"'\n"+
+                "AND Activite = '"+criteres.getActivite()+"'");
         try{
             if (resultSet!=null) { //il faut qu'on le fasse une fois pour pointer sur la 1ere ligne sinon on va avoir le résultat de la 1ere ligne 2 fois
                 resultSet.next();

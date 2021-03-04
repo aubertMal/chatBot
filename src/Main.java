@@ -23,8 +23,12 @@ public class Main {
         mapListeCritere.put("Montagne", "OK; en France ou à l'étranger?");
         mapListeCritere.put("France", "Préfères tu un séjour culturel ou un séjour détente?");
         mapListeCritere.put("Etranger","Préfères tu un séjour culturel ou un séjour détente?");
-        mapListeCritere.put("Culturel","D'accord! Voici ce que je te propose:");
-        mapListeCritere.put("Détente","D'accord! Voici ce que je te propose:");
+        mapListeCritere.put("Culturel","Y'a t-il une activité que tu aimerais faire?");
+        mapListeCritere.put("Détente","Y'a t-il une activité que tu aimerais faire?");
+        mapListeCritere.put("Baignade", "");
+        mapListeCritere.put("Escalade", "");
+        mapListeCritere.put("Randonnée", "");
+        mapListeCritere.put("Surf", "");
         mapListeCritere.put("Non","");
         mapListeCritere.put("Oui","Cool Bonnes vacances alors :) !");
         mapListeCritere.put("Bye!", "Au revoir!");
