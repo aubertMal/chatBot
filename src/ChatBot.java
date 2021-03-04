@@ -1,6 +1,13 @@
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatBot implements Runnable{
+
+    static Connexion connexion = new Connexion("Destinations.db");
+    static ResultSet resultSet;
 
     static void ecritMessage(String message){
         System.out.println(message);
@@ -9,14 +16,14 @@ public class ChatBot implements Runnable{
     @Override
     public void run() {
         String message="";
+        String messageProposition ="";
         boolean motTrouve;
         String elementMessage = "";
+        int nbrTry =0;
 
-        HashMap<String,String> mapCritereDestination=new HashMap<>();
+        CriteresUtilisateur criteresUtilisateur = new CriteresUtilisateur();
 
-        Connexion connexion = new Connexion("Destinations.db");
-        connexion.connect();
-        connexion.close();
+        String destination="";
 
         while(!message.equals("Bye!")){
             try {
@@ -30,30 +37,46 @@ public class ChatBot implements Runnable{
                         elementMessage = motsMessages[i];
                         if (Main.mapListeCritere.containsKey(elementMessage)) {
                             motTrouve = true;
+
+                            //On va stocker le choix de l'utilisateur
                             switch(elementMessage){
-                                case "m'appelle":
-                                    ecritMessage(Main.mapListeCritere.get(elementMessage)+ motsMessages[i+1] +"?" );
-                                    break;
                                 case "Plage":
                                 case "Montagne":
-                                    mapCritereDestination.put("lieu", elementMessage);
-                                    break;
-                                case "Culturel":
-                                case "Détente":
-                                    mapCritereDestination.put("typeVacances",elementMessage);
+                                    criteresUtilisateur.setLieu(elementMessage);
                                     break;
                                 case "Etranger":
                                 case "France":
-                                    mapCritereDestination.put("localisation",elementMessage);
+                                    criteresUtilisateur.setLocalisation(elementMessage);
                                     break;
                                 case "Mer":
                                 case "Océan":
-                                    mapCritereDestination.put("typePlage",elementMessage);
+                                    criteresUtilisateur.setTypePlage(elementMessage);
+                                    break;
+                                case "Culturel":
+                                case "Détente":
+                                    criteresUtilisateur.setTypesVacances(elementMessage);
                                     break;
                                 default:
-                                    ecritMessage(Main.mapListeCritere.get(motsMessages[i]));
                                     break;
                             }
+                            //Puis on lui répond
+                            if (elementMessage.equals("m'appelle"))
+                                ecritMessage(Main.mapListeCritere.get(elementMessage)+ motsMessages[i+1] +"?" );
+                            else if (elementMessage.equals("Culturel") || elementMessage.equals("Détente") || elementMessage.equals("Non")){
+                                if (elementMessage.equals("Non"))
+                                    nbrTry++;
+
+                                destination = getDestination(criteresUtilisateur,nbrTry);
+                                if (!destination.isEmpty())
+                                {
+                                    messageProposition = elementMessage.equals("Non")?"Et si je te propose "+destination+" sinon?":"Aimerais tu aller à "+destination;
+                                    ecritMessage(messageProposition);
+                                }
+                                else
+                                    ecritMessage("Je suis désolé aucune destination ne correspond à tes attentes. Essaie d'être moins exigeant!");
+                            }
+                            else
+                                ecritMessage(Main.mapListeCritere.get(elementMessage));
                         }
                     }
 
@@ -64,6 +87,30 @@ public class ChatBot implements Runnable{
                 System.out.println("Thread interrupted");
             }
         }
-        ecritMessage("Tu as choisi: " + mapCritereDestination);
+    }
+
+    static String getDestination(CriteresUtilisateur criteres, int nbrProposition ){
+         String destination="";
+
+        connexion.connect();
+
+        resultSet = connexion.query("SELECT destination FROM destinations WHERE typevacances ='"+ criteres.getTypesVacances() + "'\n" +
+                "AND lieu = '" + criteres.getLieu()+ "'\n" +
+                "AND localisation = '"+ criteres.getLocalisation()+"'");
+        try{
+            if (resultSet!=null) { //il faut qu'on le fasse une fois pour pointer sur la 1ere ligne sinon on va avoir le résultat de la 1ere ligne 2 fois
+                resultSet.next();
+                while (nbrProposition != 0) {
+                    resultSet.next();
+                    nbrProposition--;
+                }
+                destination = resultSet.getString("destination");
+            }
+        } catch(SQLException e){
+            System.out.println("Problème d'accès à la base");
+        }
+        connexion.close();
+
+        return destination;
     }
 }

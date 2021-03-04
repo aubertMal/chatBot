@@ -25,8 +25,9 @@ public class Main {
         mapListeCritere.put("Etranger","Préfères tu un séjour culturel ou un séjour détente?");
         mapListeCritere.put("Culturel","D'accord! Voici ce que je te propose:");
         mapListeCritere.put("Détente","D'accord! Voici ce que je te propose:");
-
-        mapListeCritere.put("Bye!", "Au revoir et bonnes vacances!");
+        mapListeCritere.put("Non","");
+        mapListeCritere.put("Oui","Cool Bonnes vacances alors :) !");
+        mapListeCritere.put("Bye!", "Au revoir!");
 
 
         ChatBot chatBot = new ChatBot();
