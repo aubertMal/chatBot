@@ -1,4 +1,4 @@
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 public class Main {
@@ -17,9 +17,10 @@ public class Main {
         mapListeCritere.put("Bonjour","Comment t'appelles-tu?");
         mapListeCritere.put("m'appelle","Que puis je faire pour toi ");
         mapListeCritere.put("vacances","Bonne idée! Préfères Tu partir à l'Etranger ou rester en France?");
-        mapListeCritere.put("Plage", "C'est cool! Mer ou Océan?");
         mapListeCritere.put("Etranger", "OK; Es tu plutôt Plage ou Montagne?");
         mapListeCritere.put("France", "OK; Es tu plutôt Plage ou Montagne?");
+        mapListeCritere.put("Plage", "C'est cool! Mer ou Océan?");
+        mapListeCritere.put("deux", "C'est cool! En plage aimes tu la Mer ou l' Océan?");
         mapListeCritere.put("Mer", "Préfères tu un séjour culturel ou un séjour détente?");
         mapListeCritere.put("Océan","Préfères tu un séjour culturel ou un séjour détente?");
         mapListeCritere.put("Montagne","Préfères tu un séjour culturel ou un séjour détente?");
@@ -35,12 +36,12 @@ public class Main {
 
 
         ChatBot chatBot = new ChatBot();
-        Thread threadMessageBox = new Thread(chatBot);
+        Thread threadChatBot = new Thread(chatBot);
 
         saisieUtilisateur = new SaisieUtilisateur(chatBot);
         Thread threadSaisie = new Thread(saisieUtilisateur);
 
-        threadMessageBox.start();
+        threadChatBot.start();
         threadSaisie.start();
 
     }

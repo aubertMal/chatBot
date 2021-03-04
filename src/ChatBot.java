@@ -3,11 +3,8 @@ import com.sun.source.tree.TryTree;
 import java.awt.*;
 import java.io.IOException;
 import java.net.*;
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
 
 public class ChatBot implements Runnable{
 
@@ -26,7 +23,7 @@ public class ChatBot implements Runnable{
         String elementMessage = "";
         int nbrTry =0;
 
-        CriteresUtilisateur criteresUtilisateur = new CriteresUtilisateur();
+        CriteresUtilisateur criteresUtilisateur = new CriteresUtilisateur("NA","NA");
 
         String destination="";
 
@@ -47,6 +44,7 @@ public class ChatBot implements Runnable{
                             switch(elementMessage){
                                 case "Plage":
                                 case "Montagne":
+                                case "deux":
                                     criteresUtilisateur.setLieu(elementMessage);
                                     break;
                                 case "Etranger":
@@ -82,7 +80,7 @@ public class ChatBot implements Runnable{
                                     nbrTry++;
 
                                 destination = getDestination(criteresUtilisateur,nbrTry);
-                                if (!destination.isEmpty())
+                                if (!destination.isEmpty() && (destination!=null))
                                 {
                                     messageProposition = elementMessage.equals("Non")?"Et si je te propose "+destination+" sinon?":"Aimerais tu aller à "+destination+"?";
                                     ecritMessage(messageProposition);
@@ -113,6 +111,7 @@ public class ChatBot implements Runnable{
         resultSet = connexion.query("SELECT destination FROM destinations WHERE typevacances ='"+ criteres.getTypesVacances() + "'\n" +
                 "AND lieu = '" + criteres.getLieu()+ "'\n" +
                 "AND localisation = '"+ criteres.getLocalisation()+"'\n"+
+                "AND typePlage = '"+ criteres.getTypePlage()+"'\n"+
                 "AND Activite = '"+criteres.getActivite()+"'");
         try{
             if (resultSet!=null) { //il faut qu'on le fasse une fois pour pointer sur la 1ere ligne sinon on va avoir le résultat de la 1ere ligne 2 fois
@@ -124,7 +123,6 @@ public class ChatBot implements Runnable{
                 destination = resultSet.getString("destination");
             }
         } catch(SQLException e){
-            System.out.println("Problème d'accès à la base");
         }
         connexion.close();
 

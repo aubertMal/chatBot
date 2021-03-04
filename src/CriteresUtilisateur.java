@@ -5,6 +5,11 @@ public class CriteresUtilisateur {
     private String typePlage;
     private String Activite;
 
+    public CriteresUtilisateur(String lieu, String typePlage) {
+        this.lieu = lieu;
+        this.typePlage = typePlage;
+    }
+
     public String getTypesVacances() {
         return typesVacances;
     }
