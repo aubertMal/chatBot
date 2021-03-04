@@ -1,3 +1,8 @@
+import com.sun.source.tree.TryTree;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.*;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,9 +76,10 @@ public class ChatBot implements Runnable{
                                 {
                                     messageProposition = elementMessage.equals("Non")?"Et si je te propose "+destination+" sinon?":"Aimerais tu aller à "+destination;
                                     ecritMessage(messageProposition);
+                                    openUrl(getUrl(destination));
                                 }
                                 else
-                                    ecritMessage("Je suis désolé aucune destination ne correspond à tes attentes. Essaie d'être moins exigeant!");
+                                    ecritMessage("Je suis désolé aucune destination ne correspond à tes attentes");
                             }
                             else
                                 ecritMessage(Main.mapListeCritere.get(elementMessage));
@@ -112,5 +118,34 @@ public class ChatBot implements Runnable{
         connexion.close();
 
         return destination;
+    }
+
+    static String getUrl(String destination){
+
+        String url ="";
+        connexion.connect();
+
+        resultSet = connexion.query("SELECT url FROM destinations WHERE destination = '"+destination+"'");
+
+        try {
+            url = resultSet.getString("url");
+        } catch (SQLException e){
+            System.out.println("Problème d'accès à la base pour récupérer l'url");
+        }
+        connexion.close();
+        return url;
+    }
+
+    static void openUrl(String urlAOuvrir){
+
+        if (Desktop.isDesktopSupported())
+        {
+            try {
+                Desktop.getDesktop().browse(new URI(urlAOuvrir));
+            } catch(URISyntaxException | IOException e) {
+                ecritMessage("Echec à l'ouverture de la page");
+            }
+        }
+
     }
 }
